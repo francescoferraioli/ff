@@ -6,7 +6,7 @@ const _exec = util.promisify(require('child_process').exec);
 const FF_SCRIPT_HOME = process.env.FF_SCRIPT_HOME
 
 if(!FF_SCRIPT_HOME) {
-  console.error("You need to set the FF_SCRIPT_HOME environemnt variable.")
+  console.error("You need to set the FF_SCRIPT_HOME environment variable.")
   return 1;
 }
 
