@@ -3,5 +3,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Francesco Ferraioli <francesco.ferraioli@outlook.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "type":"module"
 }
