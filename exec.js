@@ -1,13 +1,12 @@
 import util from 'util';
 import child_process from 'child_process';
 
+const execPromise = util.promisify(child_process.exec);
+
 async function execSafe(command) {
-  const execPromise = util.promisify(child_process.exec);
-  try {
-      return await execPromise(command).then(cleanResult);
-  } catch (err) {
-     console.error(err);
-  };
+  return execPromise(command)
+    .then(cleanResult)
+    .catch(console.error)
 }
 
 function cleanResult({stdout, stderr}) {
