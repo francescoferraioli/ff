@@ -1,10 +1,11 @@
+import { logArray } from './console.js';
 import { FF_PATH } from './constants.js';
-import { exec } from './exec.js';
+import { getDirectories } from './fs.js';
 
 export function isHelp(x) {
 	return ["-h", "--help"].includes(x)
 }
 
-export async function listObjects() {
-  await exec(`ls -1 ${FF_PATH}`)
+export function listObjects() {
+  logArray(getDirectories(FF_PATH))
 }
