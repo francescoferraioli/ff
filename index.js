@@ -8,7 +8,7 @@ async function run() {
   const FF_OBJECT = process.argv[2]
 
   if(isHelp(FF_OBJECT)) {
-    await listObjects()
+    listObjects()
     process.exit(0)
   }
 
