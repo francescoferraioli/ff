@@ -1,18 +1,20 @@
 #!/usr/bin/env node
 
+import { FF_PATH } from './constants.js';
 import { exec } from './exec.js';
-
-const FF_SCRIPT_HOME = process.env.FF_SCRIPT_HOME
-
-if(!FF_SCRIPT_HOME) {
-  console.error("You need to set the FF_SCRIPT_HOME environment variable.")
-  process.exit(1);
-}
+import { isHelp, listObjects } from './help.js';
 
 async function run() {
-  const ffObject = process.argv[2]
-  const ffAction = process.argv[3]
-  exec(`sh ${FF_SCRIPT_HOME}/${ffObject}/${ffAction}`)
+  const FF_OBJECT = process.argv[2]
+
+  if(isHelp(FF_OBJECT)) {
+    await listObjects()
+    process.exit(0)
+  }
+
+  const FF_ACTION = process.argv[3]
+
+  await exec(`sh ${FF_PATH}/${FF_OBJECT}/${FF_ACTION}`)
 }
 
 run()
