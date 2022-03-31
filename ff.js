@@ -19,14 +19,19 @@ export async function ff() {
     process.exit(result)
   }
 
+  const FF_EXTRA_ARGS_STRING = FF_ARGS
+    .filter(x => x !== "")
+    .map(x => `"${x}"`)
+    .join(" ");
+
   if(fileExists(FF_OBJECT_ACTION_SCRIPT_PATH)) {
-    await exec(`sh ${FF_OBJECT_ACTION_SCRIPT_PATH}`)
+    await exec(`sh ${FF_OBJECT_ACTION_SCRIPT_PATH} ${FF_EXTRA_ARGS_STRING}`)
     process.exit(0)
   }
 
   const FF_COMMON_ACTION_SCRIPT_PATH = getCommonActionScriptPath()
   if(FF_COMMON_ACTION_SCRIPT_PATH) {
-    await exec(`sh ${FF_COMMON_ACTION_SCRIPT_PATH} ${FF_OBJECT}`)
+    await exec(`sh ${FF_COMMON_ACTION_SCRIPT_PATH} ${FF_OBJECT} ${FF_EXTRA_ARGS_STRING}`)
     process.exit(0)
   }
 
