@@ -1,6 +1,6 @@
 import { logArray } from './console.js';
-import { FF_PATH, FF_OBJECT, FF_OBJECT_ACTION_SCRIPT_PATH } from './constants.js';
-import { exec } from './exec.js';
+import { FF_PATH, FF_OBJECT, FF_OBJECT_ACTION_SCRIPT_PATH, FF_ACTION } from './constants.js';
+import { exec, execPipe } from './exec.js';
 import { fileExists, getDirectories, getFiles, pathJoin } from './fs.js';
 
 export function isHelp(x) {
@@ -17,24 +17,44 @@ export function listActions() {
 
 export function getActions() {
   const specificObjectActions = getSpecificObjectActions();
-  const commonObjectActionDependencies = getCommonObjectActionDependencies();
   return [
     ...specificObjectActions,
     ...(
-      commonObjectActionDependencies
-        .filter(x => specificObjectActions.includes(x))
-        .map(x => pathJoin(FF_COMMON_FOLDER, x))
-        .flatMap(getFiles)
+      getCommonObjectActions(specificObjectActions)
+        .flatMap(([, actions]) => actions)
         .filter(x => !specificObjectActions.includes(x))
     )
   ]
 }
 
+export function getCommonObjectActions(specificObjectActions = getSpecificObjectActions()) {
+  return getCommonObjectActionDependencies()
+    .filter(x => specificObjectActions.includes(x))
+    .map(x => [x, getFiles(pathJoin(FF_COMMON_FOLDER, x))])
+}
+
 export async function showScript() {
   if(fileExists(FF_OBJECT_ACTION_SCRIPT_PATH)) {
     await exec(`cat ${FF_OBJECT_ACTION_SCRIPT_PATH}`);
-    return;
+    return 0;
   }
+
+  const dependencyAction = getCommonObjectActions()
+    .find(([,actions]) => actions.includes(FF_ACTION))
+    ?.[0]
+
+  if(dependencyAction) {
+    await execPipe(
+      [
+        `cat ${pathJoin(FF_COMMON_FOLDER, dependencyAction, FF_ACTION)}`,
+        `sed "s/\$1/${FF_OBJECT}/g"`
+      ]
+    );
+    return 0;
+  }
+
+  console.error("Command not found!")
+  return 1;
 }
 
 export function getSpecificObjectActions() {

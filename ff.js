@@ -14,8 +14,8 @@ export async function ff() {
   }
 
   if(isHelp(FF_ARGS[0])) {
-    await showScript()
-    process.exit(0)
+    const result = await showScript()
+    process.exit(result)
   }
 
   await exec(`sh ${FF_OBJECT_ACTION_SCRIPT_PATH}`)
