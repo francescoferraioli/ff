@@ -5,7 +5,4 @@ if(!FF_PATH) {
   process.exit(1);
 }
 
-export const FF_OBJECT = process.argv[2]
-
-export const FF_ACTION = process.argv[3]
-
+export const [, , FF_OBJECT, FF_ACTION, ...FF_ARGS] = process.argv
