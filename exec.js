@@ -38,3 +38,7 @@ export async function exec(command, silent) {
     }
   }
 };
+
+export async function execPipe(commands, silent) {
+  return await exec(commands.join(" | "), silent)
+}
