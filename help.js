@@ -11,5 +11,9 @@ export function listObjects() {
 }
 
 export function listActions() {
-  logArray(getFiles(pathJoin(FF_PATH, FF_OBJECT)))
+  logArray(getActions())
+}
+
+export function getActions() {
+  return getFiles(pathJoin(FF_PATH, FF_OBJECT));
 }
