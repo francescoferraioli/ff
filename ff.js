@@ -9,7 +9,7 @@ export async function ff() {
   }
 
   if(isHelp(FF_ACTION)) {
-    listActions(FF_OBJECT)
+    listActions()
     process.exit(0)
   }
 
