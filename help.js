@@ -1,6 +1,7 @@
 import { logArray } from './console.js';
-import { FF_PATH, FF_OBJECT } from './constants.js';
-import { getDirectories, getFiles, pathJoin } from './fs.js';
+import { FF_PATH, FF_OBJECT, FF_OBJECT_ACTION_SCRIPT_PATH } from './constants.js';
+import { exec } from './exec.js';
+import { fileExists, getDirectories, getFiles, pathJoin } from './fs.js';
 
 export function isHelp(x) {
 	return ["-h", "--help"].includes(x)
@@ -27,6 +28,13 @@ export function getActions() {
         .filter(x => !specificObjectActions.includes(x))
     )
   ]
+}
+
+export async function showScript() {
+  if(fileExists(FF_OBJECT_ACTION_SCRIPT_PATH)) {
+    await exec(`cat ${FF_OBJECT_ACTION_SCRIPT_PATH}`);
+    return;
+  }
 }
 
 export function getSpecificObjectActions() {
