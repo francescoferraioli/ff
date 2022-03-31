@@ -39,14 +39,12 @@ export async function showScript() {
     return 0;
   }
 
-  const dependencyAction = getCommonObjectActions()
-    .find(([,actions]) => actions.includes(FF_ACTION))
-    ?.[0]
+  const commonActionScript = getCommonActionScriptPath();
 
-  if(dependencyAction) {
+  if(commonActionScript) {
     await execPipe(
       [
-        `cat ${pathJoin(FF_COMMON_FOLDER, dependencyAction, FF_ACTION)}`,
+        `cat ${commonActionScript}`,
         `sed "s/\$1/${FF_OBJECT}/g"`
       ]
     );
@@ -65,4 +63,12 @@ const FF_COMMON_FOLDER = pathJoin(FF_PATH, ".common");
 
 export function getCommonObjectActionDependencies() {
   return getDirectories(FF_COMMON_FOLDER);
+}
+
+export function getCommonActionScriptPath() {
+  const dependencyAction = getCommonObjectActions()
+    .find(([,actions]) => actions.includes(FF_ACTION))
+    ?.[0]
+
+  return dependencyAction && pathJoin(FF_COMMON_FOLDER, dependencyAction, FF_ACTION)
 }
