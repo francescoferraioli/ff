@@ -26,7 +26,7 @@ export async function ff() {
 
   const FF_COMMON_ACTION_SCRIPT_PATH = getCommonActionScriptPath()
   if(FF_COMMON_ACTION_SCRIPT_PATH) {
-    await exec(`sh ${FF_COMMON_ACTION_SCRIPT_PATH}`)
+    await exec(`sh ${FF_COMMON_ACTION_SCRIPT_PATH} ${FF_OBJECT}`)
     process.exit(0)
   }
 
