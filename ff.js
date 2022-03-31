@@ -1,6 +1,7 @@
 import { FF_OBJECT, FF_ACTION, FF_ARGS, FF_OBJECT_ACTION_SCRIPT_PATH } from './constants.js';
 import { exec } from './exec.js';
-import { isHelp, listObjects, listActions, showScript } from './help.js';
+import { fileExists } from './fs.js';
+import { isHelp, listObjects, listActions, showScript, getCommonActionScriptPath } from './help.js';
 
 export async function ff() {
   if(isHelp(FF_OBJECT)) {
@@ -18,5 +19,17 @@ export async function ff() {
     process.exit(result)
   }
 
-  await exec(`sh ${FF_OBJECT_ACTION_SCRIPT_PATH}`)
+  if(fileExists(FF_OBJECT_ACTION_SCRIPT_PATH)) {
+    await exec(`sh ${FF_OBJECT_ACTION_SCRIPT_PATH}`)
+    process.exit(0)
+  }
+
+  const FF_COMMON_ACTION_SCRIPT_PATH = getCommonActionScriptPath()
+  if(FF_COMMON_ACTION_SCRIPT_PATH) {
+    await exec(`sh ${FF_COMMON_ACTION_SCRIPT_PATH}`)
+    process.exit(0)
+  }
+
+  console.error("Command not found!")
+  return process.exit(1);
 }
