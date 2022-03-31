@@ -1,4 +1,4 @@
-import { readdirSync } from 'fs'
+import { readdirSync, existsSync } from 'fs'
 
 export function getDirectories(source, showHidden = false) {
 	return readdirSync(source, { withFileTypes: true })
@@ -18,6 +18,9 @@ export function isHidden(x) {
   return x.startsWith(".")
 }
 
+export function fileExists(path) {
+  return existsSync(path)
+}
 export function pathJoin(...paths) {
   return paths.join("/")
 }

@@ -1,6 +1,6 @@
-import { FF_PATH, FF_OBJECT, FF_ACTION } from './constants.js';
+import { FF_OBJECT, FF_ACTION, FF_ARGS, FF_OBJECT_ACTION_SCRIPT_PATH } from './constants.js';
 import { exec } from './exec.js';
-import { isHelp, listObjects, listActions } from './help.js';
+import { isHelp, listObjects, listActions, showScript } from './help.js';
 
 export async function ff() {
   if(isHelp(FF_OBJECT)) {
@@ -13,5 +13,10 @@ export async function ff() {
     process.exit(0)
   }
 
-  await exec(`sh ${FF_PATH}/${FF_OBJECT}/${FF_ACTION}`)
+  if(isHelp(FF_ARGS[0])) {
+    await showScript()
+    process.exit(0)
+  }
+
+  await exec(`sh ${FF_OBJECT_ACTION_SCRIPT_PATH}`)
 }
