@@ -3,6 +3,8 @@ import { FF_PATH, FF_OBJECT, FF_OBJECT_ACTION_SCRIPT_PATH, FF_ACTION } from './c
 import { exec, execPipe } from './exec.js';
 import { fileExists, getDirectories, getFiles, pathJoin } from './fs.js';
 
+const README_FILENAME = 'README.md'
+
 export function isHelp(x) {
 	return ["-h", "--help"].includes(x)
 }
@@ -56,7 +58,7 @@ export async function showScript() {
 }
 
 export function getSpecificObjectActions() {
-  return getFiles(pathJoin(FF_PATH, FF_OBJECT));
+  return getFiles(pathJoin(FF_PATH, FF_OBJECT)).filter(x => x !== README_FILENAME);
 }
 
 const FF_COMMON_FOLDER = pathJoin(FF_PATH, ".common");
