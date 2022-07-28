@@ -1,4 +1,4 @@
-import { logArray } from './console.js';
+import { logArray, logBlock, logHeading } from './console.js';
 import { FF_PATH, FF_OBJECT, FF_OBJECT_ACTION_SCRIPT_PATH, FF_ACTION } from './constants.js';
 import { exec, execPipe } from './exec.js';
 import { fileExists, getDirectories, getFiles, pathJoin } from './fs.js';
@@ -9,12 +9,18 @@ export function isHelp(x) {
 	return ["-h", "--help"].includes(x)
 }
 
-export function listObjects() {
-  logArray(getDirectories(FF_PATH))
+export async function listObjects() {
+  await logBlock(
+    'Objects',
+    () => logArray(getDirectories(FF_PATH))
+  )
 }
 
-export function listActions() {
-  logArray(getActions())
+export async function listActions() {
+  await logBlock(
+    `Actions for ${FF_OBJECT}`,
+    () => logArray(getActions())
+  )
 }
 
 export function getActions() {
@@ -37,19 +43,25 @@ export function getCommonObjectActions(specificObjectActions = getSpecificObject
 
 export async function showScript() {
   if(fileExists(FF_OBJECT_ACTION_SCRIPT_PATH)) {
-    await exec(`cat ${FF_OBJECT_ACTION_SCRIPT_PATH}`);
+    await logBlock(
+      `Script content for ${FF_OBJECT} and ${FF_ACTION}`,
+      () => exec(`cat ${FF_OBJECT_ACTION_SCRIPT_PATH}`)
+    )
     return 0;
   }
 
   const commonActionScript = getCommonActionScriptPath();
 
   if(commonActionScript) {
-    await execPipe(
-      [
-        `cat ${commonActionScript}`,
-        `sed "s/\$1/${FF_OBJECT}/g"`
-      ]
-    );
+    await logBlock(
+      `Script content for ${FF_OBJECT} and ${FF_ACTION}`,
+      () => execPipe(
+        [
+          `cat ${commonActionScript}`,
+          `sed "s/\$1/${FF_OBJECT}/g"`
+        ]
+      )
+    )
     return 0;
   }
 

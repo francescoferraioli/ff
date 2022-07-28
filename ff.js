@@ -9,12 +9,12 @@ async function ffSpawn(script, args) {
 
 export async function ff() {
   if(isHelp(FF_OBJECT)) {
-    listObjects()
+    await listObjects()
     process.exit(0)
   }
 
   if(isHelp(FF_ACTION)) {
-    listActions()
+    await listActions()
     process.exit(0)
   }
 
