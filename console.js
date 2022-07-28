@@ -16,6 +16,8 @@ export async function logBlock(heading, block) {
 
   const blockEnder = "-".repeat(heading.length)
   console.log(blockEnder)
+
+  logSpace()
 }
 
 export function logSpace(x = 1) {
