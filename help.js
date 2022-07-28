@@ -5,6 +5,8 @@ import { fileExists, getDirectories, getFiles, pathJoin } from './fs.js';
 
 const README_FILENAME = 'README.md'
 
+export const FF_OBJECT_README_PATH = `${FF_PATH}/${FF_OBJECT}/${README_FILENAME}`
+
 export function isHelp(x) {
 	return ["-h", "--help"].includes(x)
 }
@@ -17,6 +19,13 @@ export async function listObjects() {
 }
 
 export async function listActions() {
+  if(fileExists(FF_OBJECT_README_PATH)) {
+    await logBlock(
+      `README for ${FF_OBJECT}`,
+      () => exec(`cat ${FF_OBJECT_README_PATH}`)
+    )
+  }
+
   await logBlock(
     `Actions for ${FF_OBJECT}`,
     () => logArray(getActions())
