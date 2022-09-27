@@ -21,9 +21,6 @@ export async function logBlock(heading, block) {
 }
 
 export function logSpace(x = 1) {
-  if(x <= 0)
-    return;
-
   for(var i = 0; i < x; i++)
     console.log("")
 }
