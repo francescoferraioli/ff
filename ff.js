@@ -4,7 +4,7 @@ import { fileExists } from './fs.js';
 import { isHelp, listObjects, listActions, showScript, getCommonActionScriptPath } from './help.js';
 
 async function ffSpawn(script, args) {
-  await spawn('sh', [script, ...args], { stdio: 'inherit'})
+  await spawn('bash', [script, ...args], { stdio: 'inherit'})
 }
 
 export async function ff() {
