@@ -52,25 +52,24 @@ Scripts are plain bash files. A shebang (`#!/usr/bin/env bash`) is recommended b
 
 Make scripts executable if you want to run them directly; `ff` will run them either way.
 
-### 3. Set `FF_SCRIPT_HOME`
+### 3. Configure your shell
 
-This environment variable must point at your scripts root. If it is unset, `ff` exits immediately with an error.
-
-### 4. Add a shell wrapper
-
-The simplest way to wire everything up is a small wrapper script on your `PATH`. For example, save this as `~/bin/ff`:
+Add two lines to your shell profile (`~/.zshrc`, `~/.bashrc`, or equivalent). Use the real paths where you cloned this repo and where your scripts live:
 
 ```bash
-#!/usr/bin/env bash
-FF_SCRIPT_HOME=~/ff-scripts \
-  node \
-  ~/ff/index.js \
-  "$@"
+export FF_SCRIPT_HOME=~/ff-scripts
+export PATH="$HOME/ff/bin:$PATH"
 ```
 
-Adjust the paths to match where you cloned this repo and where your scripts live.
+`FF_SCRIPT_HOME` must point at your scripts root. If it is unset, `ff` exits immediately with an error.
 
-Alternatively, define a shell function or alias that sets `FF_SCRIPT_HOME` and calls `node /path/to/ff/index.js`.
+`bin/ff` resolves the repo location from its own path and runs `index.js` with Node, so you do not need to hard-code the clone path in the `PATH` entry — only add the `bin` directory from wherever you cloned the repo.
+
+Open a new terminal (or `source` your profile), then confirm:
+
+```bash
+ff -h
+```
 
 ## Usage
 
@@ -159,6 +158,7 @@ Another common pattern is `.common/log/`, where objects define a `log` action th
 
 | File | Purpose |
 |---|---|
+| `bin/ff` | Shell wrapper; resolves repo path and runs `index.js` |
 | `index.js` | CLI entry point |
 | `ff.js` | Dispatch logic |
 | `constants.js` | Reads `FF_SCRIPT_HOME` and parses `argv` |
