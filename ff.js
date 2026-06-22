@@ -1,7 +1,7 @@
 import { FF_OBJECT, FF_ACTION, FF_ARGS, FF_OBJECT_ACTION_SCRIPT_PATH } from './constants.js';
 import { spawn } from './spawn.js';
 import { fileExists } from './fs.js';
-import { isHelp, listObjects, listActions, showScript, getCommonActionScriptPath } from './help.js';
+import { isHelp, listObjects, listActions, showScript, getCommonActionScriptPath, commandNotFound } from './help.js';
 
 async function ffSpawn(script, args) {
   await spawn('bash', [script, ...args], { stdio: 'inherit'})
@@ -34,6 +34,6 @@ export async function ff() {
     process.exit(0)
   }
 
-  console.error("Command not found!")
+  commandNotFound()
   return process.exit(1);
 }

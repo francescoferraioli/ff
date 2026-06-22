@@ -109,7 +109,21 @@ When you run `ff object action arg1 arg2`, the runner resolves the script in thi
    - Some actions are shared across objects. A common action is available for an object only when that object already defines the **dependency** action (a file with the same name as the `.common` subdirectory).
    - When a common script runs, the object name is passed as `$1`, followed by any extra args.
 
-3. **Not found** — print `Command not found!` and exit with code 1.
+3. **Not found** — print `Command not found: ff <object> <action>` to stderr and exit with code 1.
+
+   This happens when neither step 1 nor step 2 can resolve a script. Typical causes:
+
+   | Cause | Example | What to check |
+   |---|---|---|
+   | Unknown object | `ff blog deploy` but there is no `blog/` directory | Run `ff -h` to list objects |
+   | Unknown action | `ff web restart` but `web/restart` does not exist | Run `ff web -h` to list actions for that object |
+   | Common action without dependency | `ff web check` but `web/port` is missing | The object must define the dependency action (e.g. `port`) before `.common/port/check` is available |
+   | Typo in object or action | `ff wev deploy` or `ff web deply` | Compare against the help listings above |
+   | Wrong scripts directory | Scripts exist but `FF_SCRIPT_HOME` points elsewhere | Confirm `echo $FF_SCRIPT_HOME` and that the expected file is on disk |
+
+   The same message appears when you preview a missing command with `ff <object> <action> -h`.
+
+   Note: a missing `FF_SCRIPT_HOME` is a separate error (`You need to set the FF_SCRIPT_HOME environment variable.`) and happens before dispatch runs.
 
 ### Common actions example
 

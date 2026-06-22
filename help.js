@@ -11,6 +11,11 @@ export function isHelp(x) {
 	return ["-h", "--help"].includes(x)
 }
 
+export function commandNotFound() {
+  const command = ['ff', FF_OBJECT, FF_ACTION].filter(Boolean).join(' ')
+  console.error(`Command not found: ${command}`)
+}
+
 export async function listObjects() {
   await logBlock(
     'Objects',
@@ -74,7 +79,7 @@ export async function showScript() {
     return 0;
   }
 
-  console.error("Command not found!")
+  commandNotFound()
   return 1;
 }
 
