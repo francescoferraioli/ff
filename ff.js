@@ -4,7 +4,7 @@ import { fileExists } from './fs.js';
 import { isHelp, listObjects, listActions, showScript, getCommonActionScriptPath, commandNotFound } from './help.js';
 
 async function ffSpawn(script, args) {
-  await spawn('bash', [script, ...args], { stdio: 'inherit'})
+  return spawn('bash', [script, ...args], { stdio: 'inherit' });
 }
 
 export async function ff() {
@@ -24,14 +24,12 @@ export async function ff() {
   }
 
   if(fileExists(FF_OBJECT_ACTION_SCRIPT_PATH)) {
-    await ffSpawn(FF_OBJECT_ACTION_SCRIPT_PATH, FF_ARGS)
-    process.exit(0)
+    process.exit(await ffSpawn(FF_OBJECT_ACTION_SCRIPT_PATH, FF_ARGS))
   }
 
   const FF_COMMON_ACTION_SCRIPT_PATH = getCommonActionScriptPath()
   if(FF_COMMON_ACTION_SCRIPT_PATH) {
-    await ffSpawn(FF_COMMON_ACTION_SCRIPT_PATH, [FF_OBJECT, ...FF_ARGS])
-    process.exit(0)
+    process.exit(await ffSpawn(FF_COMMON_ACTION_SCRIPT_PATH, [FF_OBJECT, ...FF_ARGS]))
   }
 
   commandNotFound()
